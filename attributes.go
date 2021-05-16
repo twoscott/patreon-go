@@ -292,7 +292,7 @@ type UserAttributes struct {
 	// true if the user has chosen to keep private which creators they pledge to. Can be null.
 	HidePledges bool `json:"hide_pledges"`
 	// Mapping from user's connected app names to external user id on the respective app.
-	SocialConnections interface{} `json:"social_connections"`
+	SocialConnections SocialConnections `json:"social_connections"`
 }
 
 // WebhookAttributes represent webhook attributes.
@@ -310,4 +310,19 @@ type WebhookAttributes struct {
 	NumConsecutiveTimesFailed int `json:"num_consecutive_times_failed"`
 	// Secret used to sign your webhook message body, so you can validate authenticity upon receipt.
 	Secret string `json:"secret"`
+}
+
+type SocialConnections struct {
+	DeviantArt *SocialConnection `json:"deviantart"`
+	Discord    *SocialConnection `json:"discord"`
+	Facebook   *SocialConnection `json:"facebook"`
+	Spotify    *SocialConnection `json:"spotify"`
+	Twitch     *SocialConnection `json:"twitch"`
+	Twitter    *SocialConnection `json:"twitter"`
+	Youtube    *SocialConnection `json:"youtube"`
+}
+
+type SocialConnection struct {
+	URL    string `json:"url"`
+	UserID string `json:"user_id"`
 }
