@@ -1,4 +1,4 @@
-module github.com/mxpv/patreon-go
+module github.com/twoscott/patreon-go
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect

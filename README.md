@@ -1,11 +1,3 @@
-[![Build Status](https://travis-ci.org/mxpv/patreon-go.svg?branch=master)](https://travis-ci.org/mxpv/patreon-go)
-[![GoDoc](https://godoc.org/github.com/mxpv/patreon-go?status.svg)](https://godoc.org/github.com/mxpv/patreon-go/)
-[![Go Report Card](https://goreportcard.com/badge/github.com/mxpv/patreon-go)](https://goreportcard.com/report/github.com/mxpv/patreon-go)
-[![codecov](https://codecov.io/gh/mxpv/patreon-go/branch/master/graph/badge.svg)](https://codecov.io/gh/mxpv/patreon-go)
-[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
-[![Patreon](https://img.shields.io/badge/support-patreon-E6461A.svg)](https://www.patreon.com/podsync)
-
-
 # patreon-go
 
 `patreon-go` is a Go client library for accessing the [Patreon API](https://docs.patreon.com/#api).
