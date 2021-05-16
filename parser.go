@@ -78,6 +78,7 @@ type memberResponse struct {
 type memberListResponse struct {
 	Data     []memberData `json:"data"`
 	Included includes     `json:"included"`
+	Meta     meta         `json:"meta"`
 }
 
 // includes wraps 'includes' JSON field to handle objects of different type within an array.
@@ -89,6 +90,20 @@ type includes struct {
 	memberships map[string]*Member
 	tiers       map[string]*Tier
 	users       map[string]*User
+}
+
+type meta struct {
+	Pagination pagination `json:"pagination"`
+}
+
+type pagination struct {
+	Cursors cursors `json:"cursors"`
+	Total   int     `json:"total"`
+}
+
+type cursors struct {
+	First string `json:"first"`
+	Next  string `json:"next"`
 }
 
 type jsonItem struct {

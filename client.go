@@ -159,6 +159,37 @@ func (c *Client) GetMembersByCampaignID(id string, opts ...RequestOpt) ([]*Membe
 	return members, nil
 }
 
+// GetAllMembersByCampaignID is like GetMembersByCampaignID but gets all members through pagination
+func (c *Client) GetAllMembersByCampaignID(id string, opts ...RequestOpt) ([]*Member, error) {
+	if id == "" {
+		return nil, errors.New("invalid campaign id")
+	}
+
+	cursor := new(string)
+	members := make([]*Member, 0)
+	opts = append(opts, withCursor(cursor))
+
+	for {
+		var resp memberListResponse
+		path := fmt.Sprintf("/api/oauth2/v2/campaigns/%s/members", id)
+		if err := c.get(path, &resp, opts...); err != nil {
+			return nil, err
+		}
+
+		for _, item := range resp.Data {
+			member := makeMember(&item, &resp.Included)
+			members = append(members, member)
+		}
+
+		*cursor = getNextCursor(&resp.Meta)
+		if *cursor == "" {
+			break
+		}
+	}
+
+	return members, nil
+}
+
 // GetMemberByID gets a particular member by id.
 // Requires the campaigns.members scope.
 // Top-level includes: address (requires campaign.members.address scope), campaign, currently_entitled_tiers, user.
@@ -176,6 +207,10 @@ func (c *Client) GetMemberByID(id string, opts ...RequestOpt) (*Member, error) {
 	}
 
 	return makeMember(&resp.Data, &resp.Included), nil
+}
+
+func getNextCursor(data *meta) string {
+	return data.Pagination.Cursors.Next
 }
 
 func makeMember(data *memberData, included *includes) *Member {
@@ -230,8 +265,8 @@ func (c *Client) buildURL(path string, opts ...RequestOpt) (string, error) {
 		q.Set("page[count]", strconv.Itoa(cfg.size))
 	}
 
-	if cfg.cursor != "" {
-		q.Set("page[cursor]", cfg.cursor)
+	if cfg.cursor != nil && *cfg.cursor != "" {
+		q.Set("page[cursor]", *cfg.cursor)
 	}
 
 	u.RawQuery = q.Encode()

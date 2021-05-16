@@ -1,15 +1,15 @@
 package patreon
 
 import (
-	"net/url"
 	"strings"
 )
 
 type options struct {
-	fields  map[string]string
-	include string
-	size    int
-	cursor  string
+	fields     map[string]string
+	include    string
+	size       int
+	cursor     *string
+	maxResults int
 }
 
 type RequestOpt func(*options)
@@ -38,14 +38,9 @@ func WithPageSize(size int) RequestOpt {
 	}
 }
 
-// WithCursor controls cursor-based pagination. Cursor will also be extracted from navigation links for convenience.
-func WithCursor(cursor string) RequestOpt {
+// withCursor controls cursor-based pagination. Cursor will also be extracted from navigation links for convenience.
+func withCursor(cursor *string) RequestOpt {
 	return func(o *options) {
-		u, err := url.ParseRequestURI(cursor)
-		if err == nil {
-			cursor = u.Query().Get("page[cursor]")
-		}
-
 		o.cursor = cursor
 	}
 }
